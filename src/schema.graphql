@@ -1,3 +1,48 @@
+
+type Profile { 
+    id: ID
+    profileId: String! 
+    name: String!
+}
+
+input ProfileInput {
+    profileId: String!
+    name: String!
+}
+
+type Pool {
+    strategy: String!
+    strategyName: String
+    tokenMetadata: String
+    token: String!
+    amount: String!
+    metadataPointer: String
+    profile: Profile
+}
+
+input PoolInput {
+    strategy: String!
+    strategyName: String
+    tokenMetadata: String
+    token: String!
+    amount: String!
+    metadataPointer: String
+    profile: ProfileInput
+}
+
+type Grant {
+    poolId: String!
+    chainId: String
+    strategy: String!
+    allocationStartTime: String
+    allocationEndTime: String
+    approvalThreshold: String
+    maxRequestedAmount: String
+    blockTimestamp: String
+    pool: Pool
+}
+
+
 type Character { 
     id: ID 
     name: String!
@@ -27,9 +72,16 @@ type AuthPayload {
 type Query {
     characters: [Character]
     character(id: ID!): Character
+    profiles: [Profile]
+    pools: [Pool]
+    grants: [Grant]
 }
 
 type Mutation {
+    addProfile(profileId: String!, name: String!): Profile
+    addPool(strategy: String!, strategyName: String, tokenMetadata: String, token: String!, amount: String!, metadataPointer: String, profile: ProfileInput): Pool
+    addGrant(poolId: String!,chainId: String,strategy: String!,allocationStartTime: String,allocationEndTime: String,approvalThreshold: String,maxRequestedAmount: String,blockTimestamp: String,
+       pool: PoolInput): Grant
     addCharacter(name: String!, status: String!, gender: String, image: String): Character
     signup(user: UserInput): AuthPayload
     confirmEmail(token: String!): Boolean!
